@@ -31,18 +31,17 @@ CrabCode ships in two editions that share the same account, tokens, and capabili
 
 ---
 
-## 限时福利 · Free Tokens Until May 31
+## 新用户福利 · New User Offer
 
-> 新用户注册即送词元（tk）福利包，覆盖日常编码、对话、工具调用和思考模式。
+> 新用户注册即享 **免费一个月 Basic 基础版会员**，赠送 **6000 万 Credits**，畅用 DeepSeek、Qwen3.7、MiniMax-M3、GLM-5.1 等国内主流模型，覆盖编码、对话、工具调用与深度思考全场景。
 >
-> New users receive a free token (tk) bundle for coding, chat, tool calls, and thinking modes.
+> New users enjoy a **free one-month Basic membership** with **60 million Credits**, powered by leading Chinese models — DeepSeek, Qwen3.7, MiniMax-M3, GLM-5.1 and more — across coding, chat, tool use, and deep thinking.
 
 - 注册 / Sign up: <https://acosmi.com/zh>
-- 截止 / Ends: **2026-05-31**
-- 注册后在 CrabCode 中执行 `/login` 即可激活额度。
-- After signup, run `/login` inside CrabCode to activate your quota.
-- 老用户邀请新用户可额外获得词元奖励。
-- Existing users can earn bonus tokens by referring new users.
+- 注册后在 CrabCode 中执行 `/login` 即可激活会员与额度。
+- After signup, run `/login` inside CrabCode to activate your membership and Credits.
+- 老用户邀请新用户可额外获得奖励。
+- Existing users can earn bonus rewards by referring new users.
 
 ---
 
