@@ -92,14 +92,16 @@ CrabCode 当前是 **Rust 底层核心 + TypeScript 业务层**：
 
 #### macOS
 
-选择你的平台：
-
-- Apple Silicon: `darwin-arm64`
-- Intel: `darwin-x64`
+下面的命令会自动识别芯片，Apple Silicon（含 M1–M4 等 M 系列）与 Intel 通用，无需手动改：
 
 ```bash
 VERSION=1.3.37
-PLATFORM=darwin-arm64
+# 自动识别芯片：Apple Silicon = arm64，Intel = x86_64
+case "$(uname -m)" in
+  arm64)  PLATFORM=darwin-arm64 ;;
+  x86_64) PLATFORM=darwin-x64 ;;
+  *) echo "不支持的架构: $(uname -m)"; exit 1 ;;
+esac
 
 curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
@@ -123,14 +125,16 @@ export PATH="$HOME/.local/bin:$PATH"
 
 #### Linux
 
-选择你的平台：
-
-- x64: `linux-x64`
-- arm64: `linux-arm64`
+下面的命令会自动识别架构（x64 与 arm64 通用），无需手动改：
 
 ```bash
 VERSION=1.3.37
-PLATFORM=linux-x64
+# 自动识别架构：x64 = x86_64，arm64 = aarch64
+case "$(uname -m)" in
+  x86_64|amd64)  PLATFORM=linux-x64 ;;
+  aarch64|arm64) PLATFORM=linux-arm64 ;;
+  *) echo "不支持的架构: $(uname -m)"; exit 1 ;;
+esac
 
 curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
@@ -207,11 +211,18 @@ crabcode
 
 覆盖更新只替换程序文件，不会删除本地配置、登录状态、历史记录和记忆数据。不要删除 `~/.crabcode/`。
 
-macOS / Linux 使用同一安装目录，重新执行对应平台的安装命令即可覆盖旧版本：
+macOS / Linux 使用同一安装目录，重新执行下面的命令即可覆盖旧版本。命令会自动识别系统与芯片/架构，mac（Apple Silicon / Intel）与 Linux（x64 / arm64）通用：
 
 ```bash
 VERSION=1.3.37
-PLATFORM=darwin-arm64  # macOS Intel 改为 darwin-x64；Linux 改为 linux-x64 或 linux-arm64
+# 自动识别系统与芯片/架构（macOS 与 Linux 通用）
+case "$(uname -s)-$(uname -m)" in
+  Darwin-arm64)               PLATFORM=darwin-arm64 ;;
+  Darwin-x86_64)              PLATFORM=darwin-x64 ;;
+  Linux-x86_64|Linux-amd64)   PLATFORM=linux-x64 ;;
+  Linux-aarch64|Linux-arm64)  PLATFORM=linux-arm64 ;;
+  *) echo "不支持的平台: $(uname -s)-$(uname -m)"; exit 1 ;;
+esac
 
 curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
@@ -391,14 +402,16 @@ The historical Hub / Go daemon path has been retired; model and account capabili
 
 #### macOS
 
-Choose your platform:
-
-- Apple Silicon: `darwin-arm64`
-- Intel: `darwin-x64`
+The command below auto-detects your chip and works on both Apple Silicon (including the M1–M4 series) and Intel — no manual edit needed:
 
 ```bash
 VERSION=1.3.37
-PLATFORM=darwin-arm64
+# Auto-detect the chip: Apple Silicon = arm64, Intel = x86_64
+case "$(uname -m)" in
+  arm64)  PLATFORM=darwin-arm64 ;;
+  x86_64) PLATFORM=darwin-x64 ;;
+  *) echo "Unsupported architecture: $(uname -m)"; exit 1 ;;
+esac
 
 curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
@@ -422,14 +435,16 @@ export PATH="$HOME/.local/bin:$PATH"
 
 #### Linux
 
-Choose your platform:
-
-- x64: `linux-x64`
-- arm64: `linux-arm64`
+The command below auto-detects your architecture and works on both x64 and arm64 — no manual edit needed:
 
 ```bash
 VERSION=1.3.37
-PLATFORM=linux-x64
+# Auto-detect the architecture: x64 = x86_64, arm64 = aarch64
+case "$(uname -m)" in
+  x86_64|amd64)  PLATFORM=linux-x64 ;;
+  aarch64|arm64) PLATFORM=linux-arm64 ;;
+  *) echo "Unsupported architecture: $(uname -m)"; exit 1 ;;
+esac
 
 curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
@@ -506,11 +521,18 @@ After the block completes, `crabcode` works in this PowerShell window and in new
 
 An update only replaces application files. It does not remove local config, auth state, history, or memory data. Do not delete `~/.crabcode/`.
 
-On macOS / Linux, reinstall into the same application directory to overwrite the old version:
+On macOS / Linux, reinstall into the same application directory to overwrite the old version. The command auto-detects your OS and chip/architecture, working on both macOS (Apple Silicon / Intel) and Linux (x64 / arm64):
 
 ```bash
 VERSION=1.3.37
-PLATFORM=darwin-arm64  # Use darwin-x64 for Intel macOS; linux-x64 or linux-arm64 for Linux
+# Auto-detect OS and chip/architecture (works on both macOS and Linux)
+case "$(uname -s)-$(uname -m)" in
+  Darwin-arm64)               PLATFORM=darwin-arm64 ;;
+  Darwin-x86_64)              PLATFORM=darwin-x64 ;;
+  Linux-x86_64|Linux-amd64)   PLATFORM=linux-x64 ;;
+  Linux-aarch64|Linux-arm64)  PLATFORM=linux-arm64 ;;
+  *) echo "Unsupported platform: $(uname -s)-$(uname -m)"; exit 1 ;;
+esac
 
 curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
