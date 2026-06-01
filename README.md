@@ -107,20 +107,24 @@ curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
 
 rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode" "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share/crabcode"
 tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
 
 xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-ln -sf "$HOME/.local/share/crabcode/crabcode" "$HOME/.local/bin/crabcode"
+# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
+SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
+  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 
 crabcode --version
 crabcode
 ```
 
-如果 `~/.local/bin` 不在 `PATH` 中，把下面一行加入 `~/.zshrc` 或 `~/.bashrc` 后重新打开终端：
+上面的命令已自动把 `~/.local/share/crabcode` 写入 `~/.zshrc`（或 `~/.bashrc`）。若重开终端后仍提示找不到 `crabcode`，手动加入这一行：
 
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 ```
 
 #### Linux
@@ -140,12 +144,16 @@ curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
 
 rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode" "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share/crabcode"
 tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
 if command -v xattr >/dev/null 2>&1; then
   xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
 fi
-ln -sf "$HOME/.local/share/crabcode/crabcode" "$HOME/.local/bin/crabcode"
+# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
+SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
+  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 
 crabcode --version
 crabcode
@@ -228,12 +236,16 @@ curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
 
 rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode" "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share/crabcode"
 tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
 if command -v xattr >/dev/null 2>&1; then
   xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
 fi
-ln -sf "$HOME/.local/share/crabcode/crabcode" "$HOME/.local/bin/crabcode"
+# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
+SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
+  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 
 crabcode --version
 ```
@@ -417,20 +429,24 @@ curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
 
 rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode" "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share/crabcode"
 tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
 
 xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-ln -sf "$HOME/.local/share/crabcode/crabcode" "$HOME/.local/bin/crabcode"
+# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
+SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
+  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 
 crabcode --version
 crabcode
 ```
 
-If `~/.local/bin` is not in `PATH`, add this to `~/.zshrc` or `~/.bashrc`, then reopen your terminal:
+The command above already appends `~/.local/share/crabcode` to `~/.zshrc` (or `~/.bashrc`). If `crabcode` is still not found after reopening your terminal, add this line manually:
 
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 ```
 
 #### Linux
@@ -450,12 +466,16 @@ curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
 
 rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode" "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share/crabcode"
 tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
 if command -v xattr >/dev/null 2>&1; then
   xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
 fi
-ln -sf "$HOME/.local/share/crabcode/crabcode" "$HOME/.local/bin/crabcode"
+# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
+SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
+  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 
 crabcode --version
 crabcode
@@ -538,12 +558,16 @@ curl -fsSL -o /tmp/crabcode.tar.gz \
   "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
 
 rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode" "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share/crabcode"
 tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
 if command -v xattr >/dev/null 2>&1; then
   xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
 fi
-ln -sf "$HOME/.local/share/crabcode/crabcode" "$HOME/.local/bin/crabcode"
+# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
+SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
+  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
+export PATH="$HOME/.local/share/crabcode:$PATH"
 
 crabcode --version
 ```
