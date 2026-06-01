@@ -52,17 +52,17 @@ CrabCode ships in two editions that share the same account, tokens, and capabili
 
 **CrabCode（蟹码）** 是一款运行在终端里的 AI 编程助手。它把模型调用、代码检索、文件编辑、Shell 执行、MCP 工具和 GitHub 工作流放进一个统一的命令行体验里，让开发者可以在当前工程目录内完成代码理解、排错、重构、测试生成和自动化任务。
 
-这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.37**，发布时间为 **2026-06-01 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
+这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.38**，发布时间为 **2026-06-01 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
 
 ### 当前发布
 
 | 平台 | 架构 | 发布包 |
 |---|---:|---|
-| macOS Apple Silicon | arm64 | `crabcode-1.3.37-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | `crabcode-1.3.37-darwin-x64.tar.gz` |
-| Linux | arm64 | `crabcode-1.3.37-linux-arm64.tar.gz` |
-| Linux | x64 | `crabcode-1.3.37-linux-x64.tar.gz` |
-| Windows | x64 | `crabcode-1.3.37-win-x64.zip` |
+| macOS Apple Silicon | arm64 | `crabcode-1.3.38-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.38-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.38-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.38-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.38-win-x64.zip` |
 
 所有发布包都在 [Releases](https://github.com/acosmi/crabcode/releases/latest) 页面提供，并附带 SHA-256 校验文件。
 
@@ -95,7 +95,7 @@ CrabCode 当前是 **Rust 底层核心 + TypeScript 业务层**：
 下面的命令会自动识别芯片，Apple Silicon（含 M1–M4 等 M 系列）与 Intel 通用，无需手动改：
 
 ```bash
-VERSION=1.3.37
+VERSION=1.3.38
 # 自动识别芯片：Apple Silicon = arm64，Intel = x86_64
 case "$(uname -m)" in
   arm64)  PLATFORM=darwin-arm64 ;;
@@ -132,7 +132,7 @@ export PATH="$HOME/.local/share/crabcode:$PATH"
 下面的命令会自动识别架构（x64 与 arm64 通用），无需手动改：
 
 ```bash
-VERSION=1.3.37
+VERSION=1.3.38
 # 自动识别架构：x64 = x86_64，arm64 = aarch64
 case "$(uname -m)" in
   x86_64|amd64)  PLATFORM=linux-x64 ;;
@@ -170,13 +170,13 @@ crabcode
 中国大陆网络推荐使用镜像安装命令。可以直接粘贴到 CMD 或 PowerShell 中执行：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://updates.acosmi.com/crabcode/install-win-1.3.37.ps1?v=4'))"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://updates.acosmi.com/crabcode/install-win-1.3.38.ps1?v=4'))"
 ```
 
 如果镜像不可用，再使用下面的 GitHub 原始下载命令：
 
 ```powershell
-$Version = "1.3.37"
+$Version = "1.3.38"
 $Package = "crabcode-$Version-win-x64"
 $Zip = "$env:TEMP\$Package.zip"
 $InstallRoot = "$env:LOCALAPPDATA\crabcode"
@@ -222,7 +222,7 @@ crabcode
 macOS / Linux 使用同一安装目录，重新执行下面的命令即可覆盖旧版本。命令会自动识别系统与芯片/架构，mac（Apple Silicon / Intel）与 Linux（x64 / arm64）通用：
 
 ```bash
-VERSION=1.3.37
+VERSION=1.3.38
 # 自动识别系统与芯片/架构（macOS 与 Linux 通用）
 case "$(uname -s)-$(uname -m)" in
   Darwin-arm64)               PLATFORM=darwin-arm64 ;;
@@ -253,7 +253,7 @@ crabcode --version
 Windows 安装目录带版本号，更新时需要把用户 `PATH` 中旧的 `crabcode-*` 目录替换为新版本目录。以下命令仍然必须在 **PowerShell** 中执行，不要粘贴到 CMD/命令提示符：
 
 ```powershell
-$Version = "1.3.37"
+$Version = "1.3.38"
 $Package = "crabcode-$Version-win-x64"
 $Zip = "$env:TEMP\$Package.zip"
 $InstallRoot = "$env:LOCALAPPDATA\crabcode"
@@ -296,7 +296,7 @@ crabcode --version
 在已下载发布包的目录中执行：
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.37/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.38/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -310,11 +310,11 @@ Windows 可下载 Windows 专用校验文件后对比：
 
 ```powershell
 Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.37/checksums-sha256.txt" `
+  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.38/checksums-sha256.txt" `
   -OutFile checksums-sha256.txt
 
-$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.37-win-x64.zip").Line.Split()[0].ToLower()
-$Actual = (Get-FileHash crabcode-1.3.37-win-x64.zip -Algorithm SHA256).Hash.ToLower()
+$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.38-win-x64.zip").Line.Split()[0].ToLower()
+$Actual = (Get-FileHash crabcode-1.3.38-win-x64.zip -Algorithm SHA256).Hash.ToLower()
 if ($Expected -ne $Actual) {
   throw "SHA256 mismatch: expected $Expected, got $Actual"
 }
@@ -374,17 +374,17 @@ crabcode --version
 
 **CrabCode** is a terminal-native AI coding assistant. It brings model access, code search, file editing, shell execution, MCP tools, and GitHub workflows into one command-line experience, so you can understand code, debug, refactor, generate tests, and automate engineering tasks from the project directory you are already in.
 
-This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.37**, published on **2026-06-01 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
+This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.38**, published on **2026-06-01 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
 
 ### Current Release
 
 | Platform | Architecture | Asset |
 |---|---:|---|
-| macOS Apple Silicon | arm64 | `crabcode-1.3.37-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | `crabcode-1.3.37-darwin-x64.tar.gz` |
-| Linux | arm64 | `crabcode-1.3.37-linux-arm64.tar.gz` |
-| Linux | x64 | `crabcode-1.3.37-linux-x64.tar.gz` |
-| Windows | x64 | `crabcode-1.3.37-win-x64.zip` |
+| macOS Apple Silicon | arm64 | `crabcode-1.3.38-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.38-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.38-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.38-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.38-win-x64.zip` |
 
 All packages are available on the [latest release](https://github.com/acosmi/crabcode/releases/latest) page with SHA-256 checksum files.
 
@@ -417,7 +417,7 @@ The historical Hub / Go daemon path has been retired; model and account capabili
 The command below auto-detects your chip and works on both Apple Silicon (including the M1–M4 series) and Intel — no manual edit needed:
 
 ```bash
-VERSION=1.3.37
+VERSION=1.3.38
 # Auto-detect the chip: Apple Silicon = arm64, Intel = x86_64
 case "$(uname -m)" in
   arm64)  PLATFORM=darwin-arm64 ;;
@@ -454,7 +454,7 @@ export PATH="$HOME/.local/share/crabcode:$PATH"
 The command below auto-detects your architecture and works on both x64 and arm64 — no manual edit needed:
 
 ```bash
-VERSION=1.3.37
+VERSION=1.3.38
 # Auto-detect the architecture: x64 = x86_64, arm64 = aarch64
 case "$(uname -m)" in
   x86_64|amd64)  PLATFORM=linux-x64 ;;
@@ -492,13 +492,13 @@ Run the interactive TUI in **Windows Terminal** or a modern PowerShell window, a
 For networks where GitHub is slow or unstable, use the mirror installer. This one-liner can be pasted into either CMD or PowerShell:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://updates.acosmi.com/crabcode/install-win-1.3.37.ps1?v=4'))"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://updates.acosmi.com/crabcode/install-win-1.3.38.ps1?v=4'))"
 ```
 
 If the mirror is unavailable, use the original GitHub download commands below:
 
 ```powershell
-$Version = "1.3.37"
+$Version = "1.3.38"
 $Package = "crabcode-$Version-win-x64"
 $Zip = "$env:TEMP\$Package.zip"
 $InstallRoot = "$env:LOCALAPPDATA\crabcode"
@@ -544,7 +544,7 @@ An update only replaces application files. It does not remove local config, auth
 On macOS / Linux, reinstall into the same application directory to overwrite the old version. The command auto-detects your OS and chip/architecture, working on both macOS (Apple Silicon / Intel) and Linux (x64 / arm64):
 
 ```bash
-VERSION=1.3.37
+VERSION=1.3.38
 # Auto-detect OS and chip/architecture (works on both macOS and Linux)
 case "$(uname -s)-$(uname -m)" in
   Darwin-arm64)               PLATFORM=darwin-arm64 ;;
@@ -575,7 +575,7 @@ crabcode --version
 On Windows, the install directory includes the version number, so update the user `PATH` to replace old `crabcode-*` directories with the new one. Run the following commands in **PowerShell**, not in Command Prompt/CMD:
 
 ```powershell
-$Version = "1.3.37"
+$Version = "1.3.38"
 $Package = "crabcode-$Version-win-x64"
 $Zip = "$env:TEMP\$Package.zip"
 $InstallRoot = "$env:LOCALAPPDATA\crabcode"
@@ -618,7 +618,7 @@ Exit running CrabCode sessions before updating. After the update, this PowerShel
 Run this in the directory where you downloaded the release packages:
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.37/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.38/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -632,11 +632,11 @@ For Windows:
 
 ```powershell
 Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.37/checksums-sha256.txt" `
+  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.38/checksums-sha256.txt" `
   -OutFile checksums-sha256.txt
 
-$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.37-win-x64.zip").Line.Split()[0].ToLower()
-$Actual = (Get-FileHash crabcode-1.3.37-win-x64.zip -Algorithm SHA256).Hash.ToLower()
+$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.38-win-x64.zip").Line.Split()[0].ToLower()
+$Actual = (Get-FileHash crabcode-1.3.38-win-x64.zip -Algorithm SHA256).Hash.ToLower()
 if ($Expected -ne $Actual) {
   throw "SHA256 mismatch: expected $Expected, got $Actual"
 }
