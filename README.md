@@ -23,11 +23,11 @@ CrabCode ships in two editions that share the same account, tokens, and capabili
 
 | 形态 · Edition | 说明 · Description | 获取 · Get it |
 |---|---|---|
-| 🖥️ **桌面 GUI 版**<br>Desktop GUI | 图形界面桌面应用，开箱即用，适合偏好可视化操作的用户。<br>A graphical desktop app, ready to use — ideal if you prefer a visual workflow. | **官网下载 · Official download**<br><https://acosmi.com/zh/downloads> |
+| 🖥️ **桌面 GUI 版**<br>Desktop GUI | 图形界面桌面应用，开箱即用，适合偏好可视化操作的用户。<br>A graphical desktop app, ready to use — ideal if you prefer a visual workflow. | **官网下载 · Official download**<br><https://acosmi.com/zh/downloads><br>Windows 也可从本仓库 [Releases](https://github.com/acosmi/crabcode/releases/latest) 下载<br>Windows users may also download from this repo's Releases |
 | ⌨️ **命令行 TUI 版**<br>Terminal TUI | 终端原生全屏体验，贴近工程目录，适合 CLI、远程和自动化场景。<br>A terminal-native fullscreen experience, close to your project directory — great for CLI, remote, and automation. | **GitHub 发布页 · GitHub Releases**<br>见下方安装说明 · see install steps below |
 
-> 本仓库（GitHub）发布的是命令行 TUI 版的安装包；桌面 GUI 版请前往官网下载页获取。<br>
-> This repository (GitHub) hosts the terminal TUI packages; for the desktop GUI, use the official downloads page above.
+> 本仓库（GitHub）的 Releases 提供命令行 TUI 版（全平台）和 **Windows 图形 GUI 版**安装包；macOS / Linux 的 GUI 版请前往官网下载页获取。<br>
+> This repository (GitHub) Releases host the terminal TUI packages (all platforms) and the **Windows GUI** installer; for the macOS / Linux GUI, use the official downloads page above.
 
 ---
 
@@ -289,6 +289,17 @@ crabcode --version
 ```
 
 更新前请退出正在运行的 CrabCode；更新完成后，当前 PowerShell 和新打开的 PowerShell 都会使用新版本。
+
+#### Windows 图形界面（GUI）版
+
+不想用命令行的 Windows 用户，可以直接下载图形界面安装包，无需配置 PATH：
+
+1. 打开 [最新 Release](https://github.com/acosmi/crabcode/releases/latest)，在 Assets 中下载 `crabcode-1.3.40-win-x64-setup.exe`。
+2. 双击运行安装向导，按提示完成；安装后从开始菜单启动 CrabCode 桌面版。
+
+直接下载链接：<https://github.com/acosmi/crabcode/releases/download/v1.3.40/crabcode-1.3.40-win-x64-setup.exe>
+
+> macOS / Linux 的图形界面版请前往官网下载页：<https://acosmi.com/zh/downloads>。
 
 ### 校验文件完整性
 
@@ -611,6 +622,17 @@ crabcode --version
 ```
 
 Exit running CrabCode sessions before updating. After the update, this PowerShell window and newly opened PowerShell windows use the new version.
+
+#### Windows GUI Edition
+
+Windows users who prefer a graphical app can download the installer directly — no command line or PATH setup needed:
+
+1. Open the [latest release](https://github.com/acosmi/crabcode/releases/latest) and download `crabcode-1.3.40-win-x64-setup.exe` from Assets.
+2. Double-click the installer and follow the wizard; launch CrabCode from the Start menu afterwards.
+
+Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.40/crabcode-1.3.40-win-x64-setup.exe>
+
+> For the macOS / Linux GUI, use the official downloads page: <https://acosmi.com/zh/downloads>.
 
 ### Verify File Integrity
 
