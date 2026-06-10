@@ -51,21 +51,19 @@ CrabCode ships in two editions that share the same account, tokens, and capabili
 
 **CrabCode（蟹码）** 是一款运行在终端里的 AI 编程助手，把模型调用、代码检索、文件编辑、Shell 执行、MCP 工具和 GitHub 工作流收进同一套命令行体验。你无需离开当前工程目录，就能完成代码理解、排错、重构、测试生成与日常自动化。
 
-这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。**最新版本为 v1.3.40**（2026-06-07 UTC，Windows 优先发布）：Windows 平台已更新至 **v1.3.40**，macOS / Linux 当前稳定版仍为 **v1.3.38**，对应平台的 v1.3.40 安装包即将跟进。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
+这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.40**，发布时间为 **2026-06-07 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
 
 ### 当前发布
 
-| 平台 | 架构 | 版本 | 发布包 |
-|---|---:|:---:|---|
-| macOS Apple Silicon | arm64 | 1.3.38 | `crabcode-1.3.38-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | 1.3.38 | `crabcode-1.3.38-darwin-x64.tar.gz` |
-| Linux | arm64 | 1.3.38 | `crabcode-1.3.38-linux-arm64.tar.gz` |
-| Linux | x64 | 1.3.38 | `crabcode-1.3.38-linux-x64.tar.gz` |
-| Windows | x64 | **1.3.40** | `crabcode-1.3.40-win-x64.zip` |
+| 平台 | 架构 | 发布包 |
+|---|---:|---|
+| macOS Apple Silicon | arm64 | `crabcode-1.3.40-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.40-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.40-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.40-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.40-win-x64.zip` |
 
-> Windows 当前为 v1.3.40，macOS / Linux 当前为 v1.3.38；请按下方对应平台的安装命令使用匹配的版本号。
-
-所有发布包都在 [Releases](https://github.com/acosmi/crabcode/releases) 页面提供，并附带 SHA-256 校验文件。
+所有发布包都在 [Releases](https://github.com/acosmi/crabcode/releases/latest) 页面提供，并附带 SHA-256 校验文件。
 
 ### 核心能力
 
@@ -96,7 +94,7 @@ CrabCode 当前是 **Rust 底层核心 + TypeScript 业务层**：
 下面的命令会自动识别芯片，Apple Silicon（含 M1–M4 等 M 系列）与 Intel 通用，无需手动改：
 
 ```bash
-VERSION=1.3.38
+VERSION=1.3.40
 # 自动识别芯片：Apple Silicon = arm64，Intel = x86_64
 case "$(uname -m)" in
   arm64)  PLATFORM=darwin-arm64 ;;
@@ -133,7 +131,7 @@ export PATH="$HOME/.local/share/crabcode:$PATH"
 下面的命令会自动识别架构（x64 与 arm64 通用），无需手动改：
 
 ```bash
-VERSION=1.3.38
+VERSION=1.3.40
 # 自动识别架构：x64 = x86_64，arm64 = aarch64
 case "$(uname -m)" in
   x86_64|amd64)  PLATFORM=linux-x64 ;;
@@ -223,7 +221,7 @@ crabcode
 macOS / Linux 使用同一安装目录，重新执行下面的命令即可覆盖旧版本。命令会自动识别系统与芯片/架构，mac（Apple Silicon / Intel）与 Linux（x64 / arm64）通用：
 
 ```bash
-VERSION=1.3.38
+VERSION=1.3.40
 # 自动识别系统与芯片/架构（macOS 与 Linux 通用）
 case "$(uname -s)-$(uname -m)" in
   Darwin-arm64)               PLATFORM=darwin-arm64 ;;
@@ -297,7 +295,7 @@ crabcode --version
 在已下载发布包的目录中执行：
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.38/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.40/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -375,21 +373,19 @@ crabcode --version
 
 **CrabCode** is a terminal-native AI coding assistant that brings model access, code search, file editing, shell execution, MCP tools, and GitHub workflows into one command-line experience. Without leaving the project directory you are already in, you can understand code, debug, refactor, generate tests, and automate everyday engineering tasks.
 
-This public repository hosts the terminal TUI release packages and user-facing documentation. **The latest release is v1.3.40** (2026-06-07 UTC, Windows-first): the Windows package is updated to **v1.3.40**, while macOS / Linux stay on the **v1.3.38** stable build for now — v1.3.40 packages for those platforms will follow. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
+This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.40**, published on **2026-06-07 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
 
 ### Current Release
 
-| Platform | Architecture | Version | Asset |
-|---|---:|:---:|---|
-| macOS Apple Silicon | arm64 | 1.3.38 | `crabcode-1.3.38-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | 1.3.38 | `crabcode-1.3.38-darwin-x64.tar.gz` |
-| Linux | arm64 | 1.3.38 | `crabcode-1.3.38-linux-arm64.tar.gz` |
-| Linux | x64 | 1.3.38 | `crabcode-1.3.38-linux-x64.tar.gz` |
-| Windows | x64 | **1.3.40** | `crabcode-1.3.40-win-x64.zip` |
+| Platform | Architecture | Asset |
+|---|---:|---|
+| macOS Apple Silicon | arm64 | `crabcode-1.3.40-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.40-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.40-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.40-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.40-win-x64.zip` |
 
-> Windows is on v1.3.40 and macOS / Linux are on v1.3.38; use the version number that matches your platform's install commands below.
-
-All packages are available on the [Releases](https://github.com/acosmi/crabcode/releases) page with SHA-256 checksum files.
+All packages are available on the [latest release](https://github.com/acosmi/crabcode/releases/latest) page with SHA-256 checksum files.
 
 ### Core Features
 
@@ -420,7 +416,7 @@ The historical Hub / Go daemon path has been retired; model and account capabili
 The command below auto-detects your chip and works on both Apple Silicon (including the M1–M4 series) and Intel — no manual edit needed:
 
 ```bash
-VERSION=1.3.38
+VERSION=1.3.40
 # Auto-detect the chip: Apple Silicon = arm64, Intel = x86_64
 case "$(uname -m)" in
   arm64)  PLATFORM=darwin-arm64 ;;
@@ -457,7 +453,7 @@ export PATH="$HOME/.local/share/crabcode:$PATH"
 The command below auto-detects your architecture and works on both x64 and arm64 — no manual edit needed:
 
 ```bash
-VERSION=1.3.38
+VERSION=1.3.40
 # Auto-detect the architecture: x64 = x86_64, arm64 = aarch64
 case "$(uname -m)" in
   x86_64|amd64)  PLATFORM=linux-x64 ;;
@@ -547,7 +543,7 @@ An update only replaces application files. It does not remove local config, auth
 On macOS / Linux, reinstall into the same application directory to overwrite the old version. The command auto-detects your OS and chip/architecture, working on both macOS (Apple Silicon / Intel) and Linux (x64 / arm64):
 
 ```bash
-VERSION=1.3.38
+VERSION=1.3.40
 # Auto-detect OS and chip/architecture (works on both macOS and Linux)
 case "$(uname -s)-$(uname -m)" in
   Darwin-arm64)               PLATFORM=darwin-arm64 ;;
@@ -621,7 +617,7 @@ Exit running CrabCode sessions before updating. After the update, this PowerShel
 Run this in the directory where you downloaded the release packages:
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.38/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.40/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
