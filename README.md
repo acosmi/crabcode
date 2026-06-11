@@ -51,17 +51,17 @@ CrabCode ships in two editions that share the same account, tokens, and capabili
 
 **CrabCode（蟹码）** 是一款运行在终端里的 AI 编程助手，把模型调用、代码检索、文件编辑、Shell 执行、MCP 工具和 GitHub 工作流收进同一套命令行体验。你无需离开当前工程目录，就能完成代码理解、排错、重构、测试生成与日常自动化。
 
-这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.42**，发布时间为 **2026-06-11 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
+这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.43**，发布时间为 **2026-06-11 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
 
 ### 当前发布
 
 | 平台 | 架构 | 发布包 |
 |---|---:|---|
-| macOS Apple Silicon | arm64 | `crabcode-1.3.42-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | `crabcode-1.3.42-darwin-x64.tar.gz` |
-| Linux | arm64 | `crabcode-1.3.42-linux-arm64.tar.gz` |
-| Linux | x64 | `crabcode-1.3.42-linux-x64.tar.gz` |
-| Windows | x64 | `crabcode-1.3.42-win-x64.zip` |
+| macOS Apple Silicon | arm64 | `crabcode-1.3.43-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.43-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.43-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.43-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.43-win-x64.zip` |
 
 所有发布包都在 [Releases](https://github.com/acosmi/crabcode/releases/latest) 页面提供，并附带 SHA-256 校验文件。
 
@@ -89,242 +89,48 @@ CrabCode 当前是 **Rust 底层核心 + TypeScript 业务层**：
 
 ### 安装
 
-#### macOS
-
-下面的命令会自动识别芯片，Apple Silicon（含 M1–M4 等 M 系列）与 Intel 通用，无需手动改：
+**macOS / Linux** — 一条命令完成安装（自动识别平台、SHA256 fail-closed 校验、自动配置 PATH）：
 
 ```bash
-VERSION=1.3.42
-# 自动识别芯片：Apple Silicon = arm64，Intel = x86_64
-case "$(uname -m)" in
-  arm64)  PLATFORM=darwin-arm64 ;;
-  x86_64) PLATFORM=darwin-x64 ;;
-  *) echo "不支持的架构: $(uname -m)"; exit 1 ;;
-esac
-
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-
-xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-
-crabcode --version
-crabcode
+curl -fsSL https://updates.acosmi.com/crabcode/install.sh | sh
 ```
 
-上面的命令已自动把 `~/.local/share/crabcode` 写入 `~/.zshrc`（或 `~/.bashrc`）。若重开终端后仍提示找不到 `crabcode`，手动加入这一行：
-
-```bash
-export PATH="$HOME/.local/share/crabcode:$PATH"
-```
-
-#### Linux
-
-下面的命令会自动识别架构（x64 与 arm64 通用），无需手动改：
-
-```bash
-VERSION=1.3.42
-# 自动识别架构：x64 = x86_64，arm64 = aarch64
-case "$(uname -m)" in
-  x86_64|amd64)  PLATFORM=linux-x64 ;;
-  aarch64|arm64) PLATFORM=linux-arm64 ;;
-  *) echo "不支持的架构: $(uname -m)"; exit 1 ;;
-esac
-
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-if command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-fi
-# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-
-crabcode --version
-crabcode
-```
-
-#### Windows
-
-在 **PowerShell** 中执行，不要粘贴到 CMD/命令提示符。正确提示符通常以 `PS ` 开头，例如 `PS C:\Users\you>`；如果看到 `C:\Windows\System32>` 并报 `'$Version' 不是内部或外部命令`，说明当前在 CMD 中，需要先打开 PowerShell，或在 CMD 中输入 `powershell` 后再执行。
-
-`win-x64` 适用于 Intel 和 AMD 的 64 位 Windows 设备。
-
-运行交互式 TUI 时请使用 **Windows Terminal** 或新版 PowerShell 窗口，并从普通用户目录启动，例如 `C:\Users\you\Desktop>`。老式 CMD/命令提示符，尤其是管理员窗口里的 `C:\Windows\System32>`，可能出现程序已启动但界面不刷新、黑屏或只显示光标的现象；这不是安装包损坏。若必须使用旧 CMD，先执行 `chcp 65001`，并在命令提示符属性中关闭 legacy console / 旧版控制台模式。
-
-中国大陆网络推荐使用镜像安装命令。可以直接粘贴到 CMD 或 PowerShell 中执行（镜像脚本当前提供 v1.3.38；如需 Windows 最新版 **v1.3.42**，请使用下方的 GitHub 原始下载命令）：
+**Windows** — 在 **PowerShell** 中执行（不要粘贴进 CMD；正确提示符以 `PS ` 开头）：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://updates.acosmi.com/crabcode/install-win-1.3.38.ps1?v=4'))"
+irm https://updates.acosmi.com/crabcode/install.ps1 | iex
 ```
 
-如果镜像不可用，再使用下面的 GitHub 原始下载命令：
+说明：
 
-```powershell
-$Version = "1.3.42"
-$Package = "crabcode-$Version-win-x64"
-$Zip = "$env:TEMP\$Package.zip"
-$InstallRoot = "$env:LOCALAPPDATA\crabcode"
-$LegacyRoot = "$env:LOCALAPPDATA\CrabCode"
-$Bin = Join-Path $InstallRoot $Package
-
-Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v$Version/$Package.zip" `
-  -OutFile $Zip
-
-Remove-Item $Bin -Recurse -Force -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force -Path $InstallRoot | Out-Null
-Expand-Archive -Path $Zip -DestinationPath $InstallRoot -Force
-
-function Remove-CrabCodePathEntries {
-  param([string]$PathValue)
-  @($PathValue -split ";" | Where-Object {
-    $Entry = $_.Trim()
-    $Entry -and
-      ($Entry -ine $InstallRoot) -and
-      ($Entry -ine $LegacyRoot) -and
-      ($Entry -inotlike "$InstallRoot\crabcode-*") -and
-      ($Entry -inotlike "$LegacyRoot\crabcode-*")
-  })
-}
-
-$UserPath = Remove-CrabCodePathEntries ([Environment]::GetEnvironmentVariable("Path", "User"))
-[Environment]::SetEnvironmentVariable("Path", (($UserPath + $Bin) -join ";"), "User")
-
-$ProcessPath = Remove-CrabCodePathEntries $env:Path
-$env:Path = (($ProcessPath + $Bin) -join ";")
-
-crabcode --version
-crabcode
-```
-
-安装完成后，当前 PowerShell 和新打开的 PowerShell 都可以直接运行 `crabcode`。
-
-#### 覆盖更新已安装版本
-
-覆盖更新只替换程序文件，不会删除本地配置、登录状态、历史记录和记忆数据。不要删除 `~/.crabcode/`。
-
-**一键更新到最新版（macOS / Linux，推荐）**：下面这条命令会自动查询 GitHub 上的最新版本、识别平台并覆盖安装，无需手动改版本号，以后每次想升级直接重复执行即可：
+- 安装源为国内镜像（`updates.acosmi.com`），镜像不可达时自动回退 GitHub Releases；校验文件与产物**同源**，SHA256 校验 fail-closed（校验不过绝不落地）。
+- 海外用户也可以直接使用 GitHub 源，效果等价：
 
 ```bash
-# 自动取最新版本号 + 自动识别平台 + 覆盖更新
-VERSION=$(curl -fsSL https://api.github.com/repos/acosmi/crabcode/releases/latest \
-  | grep '"tag_name"' | sed -E 's/.*"v?([^"]+)".*/\1/')
-case "$(uname -s)-$(uname -m)" in
-  Darwin-arm64)               PLATFORM=darwin-arm64 ;;
-  Darwin-x86_64)              PLATFORM=darwin-x64 ;;
-  Linux-x86_64|Linux-amd64)   PLATFORM=linux-x64 ;;
-  Linux-aarch64|Linux-arm64)  PLATFORM=linux-arm64 ;;
-  *) echo "不支持的平台: $(uname -s)-$(uname -m)"; exit 1 ;;
-esac
-echo "更新到 v${VERSION} (${PLATFORM})"
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-command -v xattr >/dev/null 2>&1 && xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-crabcode --version
+curl -fsSL https://github.com/acosmi/crabcode/releases/latest/download/install.sh | sh
 ```
 
-如果你想**固定到某个具体版本**（而非最新版），用下面的命令，把 `VERSION` 改成目标版本号即可。命令会自动识别系统与芯片/架构，mac（Apple Silicon / Intel）与 Linux（x64 / arm64）通用：
+- Windows 运行交互式 TUI 请使用 **Windows Terminal** 或新版 PowerShell 窗口，并从普通用户目录启动（例如 `C:\Users\you>`）。老式 CMD（尤其管理员窗口的 `C:\Windows\System32>`）可能出现界面不刷新或黑屏；若必须使用旧 CMD，先执行 `chcp 65001` 并关闭 legacy console 模式。
+- 手动安装（高级）：从 [Releases](https://github.com/acosmi/crabcode/releases/latest) 下载对应平台压缩包，解压后把目录加入 PATH 即可。注意安装目录需**整体保留**（launcher 从同目录解析 `dist/`、`bun`、`node_modules/`、orchestrator 等，不要只拷单个二进制、不要跨目录 symlink）。
+
+#### 更新
+
+已安装用户一条命令更新到最新版（只替换程序文件，不动配置、登录状态、历史与记忆数据）：
 
 ```bash
-VERSION=1.3.42
-# 自动识别系统与芯片/架构（macOS 与 Linux 通用）
-case "$(uname -s)-$(uname -m)" in
-  Darwin-arm64)               PLATFORM=darwin-arm64 ;;
-  Darwin-x86_64)              PLATFORM=darwin-x64 ;;
-  Linux-x86_64|Linux-amd64)   PLATFORM=linux-x64 ;;
-  Linux-aarch64|Linux-arm64)  PLATFORM=linux-arm64 ;;
-  *) echo "不支持的平台: $(uname -s)-$(uname -m)"; exit 1 ;;
-esac
-
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-if command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-fi
-# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-
-crabcode --version
+crabcode update
 ```
 
-Windows 安装目录带版本号，更新时需要把用户 `PATH` 中旧的 `crabcode-*` 目录替换为新版本目录。以下命令仍然必须在 **PowerShell** 中执行，不要粘贴到 CMD/命令提示符：
-
-```powershell
-$Version = "1.3.42"
-$Package = "crabcode-$Version-win-x64"
-$Zip = "$env:TEMP\$Package.zip"
-$InstallRoot = "$env:LOCALAPPDATA\crabcode"
-$LegacyRoot = "$env:LOCALAPPDATA\CrabCode"
-$Bin = Join-Path $InstallRoot $Package
-
-Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v$Version/$Package.zip" `
-  -OutFile $Zip
-
-Remove-Item $Bin -Recurse -Force -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force -Path $InstallRoot | Out-Null
-Expand-Archive -Path $Zip -DestinationPath $InstallRoot -Force
-
-function Remove-CrabCodePathEntries {
-  param([string]$PathValue)
-  @($PathValue -split ";" | Where-Object {
-    $Entry = $_.Trim()
-    $Entry -and
-      ($Entry -ine $InstallRoot) -and
-      ($Entry -ine $LegacyRoot) -and
-      ($Entry -inotlike "$InstallRoot\crabcode-*") -and
-      ($Entry -inotlike "$LegacyRoot\crabcode-*")
-  })
-}
-
-$UserPath = Remove-CrabCodePathEntries ([Environment]::GetEnvironmentVariable("Path", "User"))
-[Environment]::SetEnvironmentVariable("Path", (($UserPath + $Bin) -join ";"), "User")
-
-$ProcessPath = Remove-CrabCodePathEntries $env:Path
-$env:Path = (($ProcessPath + $Bin) -join ";")
-
-crabcode --version
-```
-
-更新前请退出正在运行的 CrabCode；更新完成后，当前 PowerShell 和新打开的 PowerShell 都会使用新版本。
+也可以在 TUI 内输入 `/update`，或重跑上面的安装命令（等价覆盖安装）。
 
 #### Windows 图形界面（GUI）版
 
 不想用命令行的 Windows 用户，可以直接下载图形界面安装包，无需配置 PATH：
 
-1. 打开 [最新 Release](https://github.com/acosmi/crabcode/releases/latest)，在 Assets 中下载 `crabcode-1.3.42-win-x64-setup.exe`。
+1. 打开 [最新 Release](https://github.com/acosmi/crabcode/releases/latest)，在 Assets 中下载 `crabcode-1.3.43-win-x64-setup.exe`。
 2. 双击运行安装向导，按提示完成；安装后从开始菜单启动 CrabCode 桌面版。
 
-直接下载链接：<https://github.com/acosmi/crabcode/releases/download/v1.3.42/crabcode-1.3.42-win-x64-setup.exe>
+直接下载链接：<https://github.com/acosmi/crabcode/releases/download/v1.3.43/crabcode-1.3.43-win-x64-setup.exe>
 
 > macOS / Linux 的图形界面版请前往官网下载页：<https://acosmi.com/zh/downloads>。
 
@@ -333,7 +139,7 @@ crabcode --version
 在已下载发布包的目录中执行：
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.42/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -347,11 +153,11 @@ Windows 可下载 Windows 专用校验文件后对比：
 
 ```powershell
 Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.42/checksums-sha256.txt" `
+  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt" `
   -OutFile checksums-sha256.txt
 
-$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.42-win-x64.zip").Line.Split()[0].ToLower()
-$Actual = (Get-FileHash crabcode-1.3.42-win-x64.zip -Algorithm SHA256).Hash.ToLower()
+$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.43-win-x64.zip").Line.Split()[0].ToLower()
+$Actual = (Get-FileHash crabcode-1.3.43-win-x64.zip -Algorithm SHA256).Hash.ToLower()
 if ($Expected -ne $Actual) {
   throw "SHA256 mismatch: expected $Expected, got $Actual"
 }
@@ -411,17 +217,17 @@ crabcode --version
 
 **CrabCode** is a terminal-native AI coding assistant that brings model access, code search, file editing, shell execution, MCP tools, and GitHub workflows into one command-line experience. Without leaving the project directory you are already in, you can understand code, debug, refactor, generate tests, and automate everyday engineering tasks.
 
-This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.42**, published on **2026-06-11 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
+This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.43**, published on **2026-06-11 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
 
 ### Current Release
 
 | Platform | Architecture | Asset |
 |---|---:|---|
-| macOS Apple Silicon | arm64 | `crabcode-1.3.42-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | `crabcode-1.3.42-darwin-x64.tar.gz` |
-| Linux | arm64 | `crabcode-1.3.42-linux-arm64.tar.gz` |
-| Linux | x64 | `crabcode-1.3.42-linux-x64.tar.gz` |
-| Windows | x64 | `crabcode-1.3.42-win-x64.zip` |
+| macOS Apple Silicon | arm64 | `crabcode-1.3.43-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.43-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.43-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.43-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.43-win-x64.zip` |
 
 All packages are available on the [latest release](https://github.com/acosmi/crabcode/releases/latest) page with SHA-256 checksum files.
 
@@ -449,242 +255,48 @@ The historical Hub / Go daemon path has been retired; model and account capabili
 
 ### Installation
 
-#### macOS
-
-The command below auto-detects your chip and works on both Apple Silicon (including the M1–M4 series) and Intel — no manual edit needed:
+**macOS / Linux** — one command (auto-detects platform, fail-closed SHA256 verification, sets up PATH automatically):
 
 ```bash
-VERSION=1.3.42
-# Auto-detect the chip: Apple Silicon = arm64, Intel = x86_64
-case "$(uname -m)" in
-  arm64)  PLATFORM=darwin-arm64 ;;
-  x86_64) PLATFORM=darwin-x64 ;;
-  *) echo "Unsupported architecture: $(uname -m)"; exit 1 ;;
-esac
-
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-
-xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-
-crabcode --version
-crabcode
+curl -fsSL https://updates.acosmi.com/crabcode/install.sh | sh
 ```
 
-The command above already appends `~/.local/share/crabcode` to `~/.zshrc` (or `~/.bashrc`). If `crabcode` is still not found after reopening your terminal, add this line manually:
-
-```bash
-export PATH="$HOME/.local/share/crabcode:$PATH"
-```
-
-#### Linux
-
-The command below auto-detects your architecture and works on both x64 and arm64 — no manual edit needed:
-
-```bash
-VERSION=1.3.42
-# Auto-detect the architecture: x64 = x86_64, arm64 = aarch64
-case "$(uname -m)" in
-  x86_64|amd64)  PLATFORM=linux-x64 ;;
-  aarch64|arm64) PLATFORM=linux-arm64 ;;
-  *) echo "Unsupported architecture: $(uname -m)"; exit 1 ;;
-esac
-
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-if command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-fi
-# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-
-crabcode --version
-crabcode
-```
-
-#### Windows
-
-Run this in **PowerShell**, not in Command Prompt/CMD. A correct prompt usually starts with `PS `, for example `PS C:\Users\you>`. If you see `C:\Windows\System32>` and get `'$Version' is not recognized as an internal or external command`, you are in CMD; open PowerShell first, or type `powershell` in CMD before running the commands.
-
-`win-x64` works on both Intel and AMD 64-bit Windows devices.
-
-Run the interactive TUI in **Windows Terminal** or a modern PowerShell window, and start it from a normal user directory such as `C:\Users\you\Desktop>`. Legacy Command Prompt/CMD, especially an elevated `C:\Windows\System32>` window, may make the app look frozen, blank, or show only a cursor even though the executable has started. This is not a corrupt installation. If you must use legacy CMD, run `chcp 65001` first and disable legacy console mode in Command Prompt properties.
-
-For networks where GitHub is slow or unstable, use the mirror installer. This one-liner can be pasted into either CMD or PowerShell (the mirror currently serves v1.3.38; for the latest Windows **v1.3.42**, use the GitHub download commands below):
+**Windows** — run in **PowerShell** (not CMD; the prompt should start with `PS `):
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://updates.acosmi.com/crabcode/install-win-1.3.38.ps1?v=4'))"
+irm https://updates.acosmi.com/crabcode/install.ps1 | iex
 ```
 
-If the mirror is unavailable, use the original GitHub download commands below:
+Notes:
 
-```powershell
-$Version = "1.3.42"
-$Package = "crabcode-$Version-win-x64"
-$Zip = "$env:TEMP\$Package.zip"
-$InstallRoot = "$env:LOCALAPPDATA\crabcode"
-$LegacyRoot = "$env:LOCALAPPDATA\CrabCode"
-$Bin = Join-Path $InstallRoot $Package
-
-Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v$Version/$Package.zip" `
-  -OutFile $Zip
-
-Remove-Item $Bin -Recurse -Force -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force -Path $InstallRoot | Out-Null
-Expand-Archive -Path $Zip -DestinationPath $InstallRoot -Force
-
-function Remove-CrabCodePathEntries {
-  param([string]$PathValue)
-  @($PathValue -split ";" | Where-Object {
-    $Entry = $_.Trim()
-    $Entry -and
-      ($Entry -ine $InstallRoot) -and
-      ($Entry -ine $LegacyRoot) -and
-      ($Entry -inotlike "$InstallRoot\crabcode-*") -and
-      ($Entry -inotlike "$LegacyRoot\crabcode-*")
-  })
-}
-
-$UserPath = Remove-CrabCodePathEntries ([Environment]::GetEnvironmentVariable("Path", "User"))
-[Environment]::SetEnvironmentVariable("Path", (($UserPath + $Bin) -join ";"), "User")
-
-$ProcessPath = Remove-CrabCodePathEntries $env:Path
-$env:Path = (($ProcessPath + $Bin) -join ";")
-
-crabcode --version
-crabcode
-```
-
-After the block completes, `crabcode` works in this PowerShell window and in newly opened PowerShell windows.
-
-#### Update an Existing Installation
-
-An update only replaces application files. It does not remove local config, auth state, history, or memory data. Do not delete `~/.crabcode/`.
-
-**Update to the latest version (macOS / Linux, recommended)**: the command below queries GitHub for the latest release, auto-detects your platform, and overwrites your install — no need to edit the version number. Re-run it any time you want to upgrade:
+- The default source is our distribution mirror (`updates.acosmi.com`) with automatic fallback to GitHub Releases. Checksums are fetched from the **same source** as the artifact and verification is fail-closed.
+- You can also install straight from GitHub — fully equivalent:
 
 ```bash
-# Resolve latest version + auto-detect platform + overwrite install
-VERSION=$(curl -fsSL https://api.github.com/repos/acosmi/crabcode/releases/latest \
-  | grep '"tag_name"' | sed -E 's/.*"v?([^"]+)".*/\1/')
-case "$(uname -s)-$(uname -m)" in
-  Darwin-arm64)               PLATFORM=darwin-arm64 ;;
-  Darwin-x86_64)              PLATFORM=darwin-x64 ;;
-  Linux-x86_64|Linux-amd64)   PLATFORM=linux-x64 ;;
-  Linux-aarch64|Linux-arm64)  PLATFORM=linux-arm64 ;;
-  *) echo "Unsupported platform: $(uname -s)-$(uname -m)"; exit 1 ;;
-esac
-echo "Updating to v${VERSION} (${PLATFORM})"
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-command -v xattr >/dev/null 2>&1 && xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-crabcode --version
+curl -fsSL https://github.com/acosmi/crabcode/releases/latest/download/install.sh | sh
 ```
 
-To **pin a specific version** instead of the latest, use the command below and set `VERSION` to the target version. It auto-detects your OS and chip/architecture, working on both macOS (Apple Silicon / Intel) and Linux (x64 / arm64):
+- On Windows, run the interactive TUI from **Windows Terminal** or a modern PowerShell window started in a regular user directory (e.g. `C:\Users\you>`). Legacy CMD windows (especially elevated `C:\Windows\System32>`) may show a frozen or black screen; if you must use legacy CMD, run `chcp 65001` first and disable legacy console mode.
+- Manual install (advanced): download the platform archive from [Releases](https://github.com/acosmi/crabcode/releases/latest), extract it, and add the directory to PATH. Keep the directory **intact** — the launcher resolves `dist/`, `bun`, `node_modules/`, and the orchestrator from its own directory; do not copy out a single binary or symlink across directories.
+
+#### Update
+
+Already installed? One command updates to the latest version (replaces program files only — your config, login state, history and memory data are untouched):
 
 ```bash
-VERSION=1.3.42
-# Auto-detect OS and chip/architecture (works on both macOS and Linux)
-case "$(uname -s)-$(uname -m)" in
-  Darwin-arm64)               PLATFORM=darwin-arm64 ;;
-  Darwin-x86_64)              PLATFORM=darwin-x64 ;;
-  Linux-x86_64|Linux-amd64)   PLATFORM=linux-x64 ;;
-  Linux-aarch64|Linux-arm64)  PLATFORM=linux-arm64 ;;
-  *) echo "Unsupported platform: $(uname -s)-$(uname -m)"; exit 1 ;;
-esac
-
-curl -fsSL -o /tmp/crabcode.tar.gz \
-  "https://github.com/acosmi/crabcode/releases/download/v${VERSION}/crabcode-${VERSION}-${PLATFORM}.tar.gz"
-
-rm -rf "$HOME/.local/share/crabcode"
-mkdir -p "$HOME/.local/share/crabcode"
-tar -xzf /tmp/crabcode.tar.gz --strip-components=1 -C "$HOME/.local/share/crabcode"
-if command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$HOME/.local/share/crabcode" 2>/dev/null || true
-fi
-# 把安装目录加入 PATH（不要用跨目录 symlink：launcher 需从安装目录解析 dist/bun/orchestrator）
-SHELL_RC="$HOME/.zshrc"; [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
-grep -q '/.local/share/crabcode' "$SHELL_RC" 2>/dev/null || \
-  echo 'export PATH="$HOME/.local/share/crabcode:$PATH"' >> "$SHELL_RC"
-export PATH="$HOME/.local/share/crabcode:$PATH"
-
-crabcode --version
+crabcode update
 ```
 
-On Windows, the install directory includes the version number, so update the user `PATH` to replace old `crabcode-*` directories with the new one. Run the following commands in **PowerShell**, not in Command Prompt/CMD:
-
-```powershell
-$Version = "1.3.42"
-$Package = "crabcode-$Version-win-x64"
-$Zip = "$env:TEMP\$Package.zip"
-$InstallRoot = "$env:LOCALAPPDATA\crabcode"
-$LegacyRoot = "$env:LOCALAPPDATA\CrabCode"
-$Bin = Join-Path $InstallRoot $Package
-
-Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v$Version/$Package.zip" `
-  -OutFile $Zip
-
-Remove-Item $Bin -Recurse -Force -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force -Path $InstallRoot | Out-Null
-Expand-Archive -Path $Zip -DestinationPath $InstallRoot -Force
-
-function Remove-CrabCodePathEntries {
-  param([string]$PathValue)
-  @($PathValue -split ";" | Where-Object {
-    $Entry = $_.Trim()
-    $Entry -and
-      ($Entry -ine $InstallRoot) -and
-      ($Entry -ine $LegacyRoot) -and
-      ($Entry -inotlike "$InstallRoot\crabcode-*") -and
-      ($Entry -inotlike "$LegacyRoot\crabcode-*")
-  })
-}
-
-$UserPath = Remove-CrabCodePathEntries ([Environment]::GetEnvironmentVariable("Path", "User"))
-[Environment]::SetEnvironmentVariable("Path", (($UserPath + $Bin) -join ";"), "User")
-
-$ProcessPath = Remove-CrabCodePathEntries $env:Path
-$env:Path = (($ProcessPath + $Bin) -join ";")
-
-crabcode --version
-```
-
-Exit running CrabCode sessions before updating. After the update, this PowerShell window and newly opened PowerShell windows use the new version.
+You can also type `/update` inside the TUI, or simply re-run the install one-liner above.
 
 #### Windows GUI Edition
 
 Windows users who prefer a graphical app can download the installer directly — no command line or PATH setup needed:
 
-1. Open the [latest release](https://github.com/acosmi/crabcode/releases/latest) and download `crabcode-1.3.42-win-x64-setup.exe` from Assets.
+1. Open the [latest release](https://github.com/acosmi/crabcode/releases/latest) and download `crabcode-1.3.43-win-x64-setup.exe` from Assets.
 2. Double-click the installer and follow the wizard; launch CrabCode from the Start menu afterwards.
 
-Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.42/crabcode-1.3.42-win-x64-setup.exe>
+Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.43/crabcode-1.3.43-win-x64-setup.exe>
 
 > For the macOS / Linux GUI, use the official downloads page: <https://acosmi.com/zh/downloads>.
 
@@ -693,7 +305,7 @@ Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.42/c
 Run this in the directory where you downloaded the release packages:
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.42/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -707,11 +319,11 @@ For Windows:
 
 ```powershell
 Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.42/checksums-sha256.txt" `
+  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt" `
   -OutFile checksums-sha256.txt
 
-$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.42-win-x64.zip").Line.Split()[0].ToLower()
-$Actual = (Get-FileHash crabcode-1.3.42-win-x64.zip -Algorithm SHA256).Hash.ToLower()
+$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.43-win-x64.zip").Line.Split()[0].ToLower()
+$Actual = (Get-FileHash crabcode-1.3.43-win-x64.zip -Algorithm SHA256).Hash.ToLower()
 if ($Expected -ne $Actual) {
   throw "SHA256 mismatch: expected $Expected, got $Actual"
 }
