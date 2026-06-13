@@ -202,6 +202,38 @@ crabcode --version
 - 工具执行默认受权限控制；文件和 Shell 操作需要按目录授权。
 - 模型请求经由 Acosmi 网关转发到上游模型服务；具体可用模型和额度以账号状态为准。
 
+### 故障排查：老 CPU 报「非法指令 / Illegal instruction」
+
+CrabCode 内置的 Bun 运行时默认要求 **AVX2** 指令集（Intel 第 4 代 Haswell，2013 年及以后）。更老的 x64 CPU（如第 1/2/3 代 i5）缺少 AVX2，启动时会崩溃并报 `Illegal instruction`、`非法指令` 或 `CPU lacks AVX support`。
+
+解决办法：改用 Bun 官方的 **baseline 构建**（只需 SSE4.2，支持更老的 x64 CPU；性能略低但可正常运行）。
+
+1. 下载对应平台的 baseline 包（版本号 `1.3.11` 为当前内置 Bun 版本，如不一致请换成对应版本）：
+
+   - Linux：`bun-linux-x64-baseline.zip`
+   - macOS：`bun-darwin-x64-baseline.zip`
+   - Windows：`bun-windows-x64-baseline.zip`
+
+   下载地址：<https://github.com/oven-sh/bun/releases/tag/bun-v1.3.11>
+
+2. 解压得到 `bun`（Windows 为 `bun.exe`），放到一个固定路径。
+
+3. 设置环境变量 `CRABCODE_BUN_BIN` 指向它，然后**重启 CrabCode**（GUI 需整个退出重开）：
+
+   macOS / Linux（写入 `~/.zshrc` 或 `~/.bashrc`，然后 `source` 或重开终端）：
+
+   ```bash
+   export CRABCODE_BUN_BIN="$HOME/path/to/bun"
+   ```
+
+   Windows（PowerShell，设用户级变量后重开终端）：
+
+   ```powershell
+   [Environment]::SetEnvironmentVariable("CRABCODE_BUN_BIN", "C:\path\to\bun.exe", "User")
+   ```
+
+> 说明：baseline 构建仍需 **SSE4.2**（约 2008 年后的 CPU）。更早的处理器 Bun 不支持，无法运行。
+
 ### 反馈与支持
 
 - Bug / 建议: <https://github.com/acosmi/crabcode/issues>
@@ -367,6 +399,38 @@ Common shortcuts:
 - User configuration, auth state, history, and local memory are stored under `~/.crabcode/` by default.
 - Tool execution is permission-gated by default; file and Shell access are authorized per directory.
 - Model requests are routed through the Acosmi gateway to upstream model services; available models and quota depend on account status.
+
+### Troubleshooting: "Illegal instruction" on older CPUs
+
+CrabCode's bundled Bun runtime requires **AVX2** by default (Intel Haswell / 4th-gen, 2013 and later). Older x64 CPUs without AVX2 (such as 1st/2nd/3rd-gen i5) crash on startup with `Illegal instruction` or `CPU lacks AVX support`.
+
+Fix: switch to Bun's official **baseline build** (needs only SSE4.2; slightly slower but runs on older x64 CPUs).
+
+1. Download the baseline package for your platform (version `1.3.11` is the currently bundled Bun; change it if yours differs):
+
+   - Linux: `bun-linux-x64-baseline.zip`
+   - macOS: `bun-darwin-x64-baseline.zip`
+   - Windows: `bun-windows-x64-baseline.zip`
+
+   From: <https://github.com/oven-sh/bun/releases/tag/bun-v1.3.11>
+
+2. Extract `bun` (`bun.exe` on Windows) to a fixed path.
+
+3. Set the `CRABCODE_BUN_BIN` environment variable to point at it, then **restart CrabCode** (fully quit and reopen the GUI):
+
+   macOS / Linux (add to `~/.zshrc` or `~/.bashrc`, then `source` it or reopen the terminal):
+
+   ```bash
+   export CRABCODE_BUN_BIN="$HOME/path/to/bun"
+   ```
+
+   Windows (PowerShell; set a user-level variable, then reopen the terminal):
+
+   ```powershell
+   [Environment]::SetEnvironmentVariable("CRABCODE_BUN_BIN", "C:\path\to\bun.exe", "User")
+   ```
+
+> Note: the baseline build still requires **SSE4.2** (CPUs from ~2008 onward). Bun does not support older processors.
 
 ### Feedback & Support
 
