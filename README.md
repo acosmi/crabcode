@@ -51,17 +51,17 @@ CrabCode ships in two editions that share the same account, tokens, and capabili
 
 **CrabCode（蟹码）** 是一款运行在终端里的 AI 编程助手，把模型调用、代码检索、文件编辑、Shell 执行、MCP 工具和 GitHub 工作流收进同一套命令行体验。你无需离开当前工程目录，就能完成代码理解、排错、重构、测试生成与日常自动化。
 
-这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.43**，发布时间为 **2026-06-11 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
+这个公开仓库用于发布命令行 TUI 版的稳定安装包和面向用户的说明。最新版本为 **v1.3.47**，发布时间为 **2026-06-13 UTC**。如需图形界面桌面版（GUI），请前往官方下载页：<https://acosmi.com/zh/downloads>。
 
 ### 当前发布
 
 | 平台 | 架构 | 发布包 |
 |---|---:|---|
-| macOS Apple Silicon | arm64 | `crabcode-1.3.43-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | `crabcode-1.3.43-darwin-x64.tar.gz` |
-| Linux | arm64 | `crabcode-1.3.43-linux-arm64.tar.gz` |
-| Linux | x64 | `crabcode-1.3.43-linux-x64.tar.gz` |
-| Windows | x64 | `crabcode-1.3.43-win-x64.zip` |
+| macOS Apple Silicon | arm64 | `crabcode-1.3.47-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.47-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.47-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.47-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.47-win-x64.zip` |
 
 所有发布包都在 [Releases](https://github.com/acosmi/crabcode/releases/latest) 页面提供，并附带 SHA-256 校验文件。
 
@@ -127,10 +127,10 @@ crabcode update
 
 不想用命令行的 Windows 用户，可以直接下载图形界面安装包，无需配置 PATH：
 
-1. 打开 [最新 Release](https://github.com/acosmi/crabcode/releases/latest)，在 Assets 中下载 `crabcode-1.3.43-win-x64-setup.exe`。
+1. 打开 [最新 Release](https://github.com/acosmi/crabcode/releases/latest)，在 Assets 中下载 `crabcode-1.3.47-win-x64-setup.exe`。
 2. 双击运行安装向导，按提示完成；安装后从开始菜单启动 CrabCode 桌面版。
 
-直接下载链接：<https://github.com/acosmi/crabcode/releases/download/v1.3.43/crabcode-1.3.43-win-x64-setup.exe>
+直接下载链接：<https://github.com/acosmi/crabcode/releases/download/v1.3.47/crabcode-1.3.47-win-x64-setup.exe>
 
 > macOS / Linux 的图形界面版请前往官网下载页：<https://acosmi.com/zh/downloads>。
 
@@ -139,7 +139,7 @@ crabcode update
 在已下载发布包的目录中执行：
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.47/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -153,11 +153,11 @@ Windows 可下载 Windows 专用校验文件后对比：
 
 ```powershell
 Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt" `
+  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.47/checksums-sha256.txt" `
   -OutFile checksums-sha256.txt
 
-$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.43-win-x64.zip").Line.Split()[0].ToLower()
-$Actual = (Get-FileHash crabcode-1.3.43-win-x64.zip -Algorithm SHA256).Hash.ToLower()
+$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.47-win-x64.zip").Line.Split()[0].ToLower()
+$Actual = (Get-FileHash crabcode-1.3.47-win-x64.zip -Algorithm SHA256).Hash.ToLower()
 if ($Expected -ne $Actual) {
   throw "SHA256 mismatch: expected $Expected, got $Actual"
 }
@@ -249,17 +249,17 @@ CrabCode 内置的 Bun 运行时默认要求 **AVX2** 指令集（Intel 第 4 �
 
 **CrabCode** is a terminal-native AI coding assistant that brings model access, code search, file editing, shell execution, MCP tools, and GitHub workflows into one command-line experience. Without leaving the project directory you are already in, you can understand code, debug, refactor, generate tests, and automate everyday engineering tasks.
 
-This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.43**, published on **2026-06-11 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
+This public repository hosts the terminal TUI release packages and user-facing documentation. The latest release is **v1.3.47**, published on **2026-06-13 UTC**. For the graphical desktop app (GUI), use the official downloads page: <https://acosmi.com/zh/downloads>.
 
 ### Current Release
 
 | Platform | Architecture | Asset |
 |---|---:|---|
-| macOS Apple Silicon | arm64 | `crabcode-1.3.43-darwin-arm64.tar.gz` |
-| macOS Intel | x64 | `crabcode-1.3.43-darwin-x64.tar.gz` |
-| Linux | arm64 | `crabcode-1.3.43-linux-arm64.tar.gz` |
-| Linux | x64 | `crabcode-1.3.43-linux-x64.tar.gz` |
-| Windows | x64 | `crabcode-1.3.43-win-x64.zip` |
+| macOS Apple Silicon | arm64 | `crabcode-1.3.47-darwin-arm64.tar.gz` |
+| macOS Intel | x64 | `crabcode-1.3.47-darwin-x64.tar.gz` |
+| Linux | arm64 | `crabcode-1.3.47-linux-arm64.tar.gz` |
+| Linux | x64 | `crabcode-1.3.47-linux-x64.tar.gz` |
+| Windows | x64 | `crabcode-1.3.47-win-x64.zip` |
 
 All packages are available on the [latest release](https://github.com/acosmi/crabcode/releases/latest) page with SHA-256 checksum files.
 
@@ -325,10 +325,10 @@ You can also type `/update` inside the TUI, or simply re-run the install one-lin
 
 Windows users who prefer a graphical app can download the installer directly — no command line or PATH setup needed:
 
-1. Open the [latest release](https://github.com/acosmi/crabcode/releases/latest) and download `crabcode-1.3.43-win-x64-setup.exe` from Assets.
+1. Open the [latest release](https://github.com/acosmi/crabcode/releases/latest) and download `crabcode-1.3.47-win-x64-setup.exe` from Assets.
 2. Double-click the installer and follow the wizard; launch CrabCode from the Start menu afterwards.
 
-Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.43/crabcode-1.3.43-win-x64-setup.exe>
+Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.47/crabcode-1.3.47-win-x64-setup.exe>
 
 > For the macOS / Linux GUI, use the official downloads page: <https://acosmi.com/zh/downloads>.
 
@@ -337,7 +337,7 @@ Direct download: <https://github.com/acosmi/crabcode/releases/download/v1.3.43/c
 Run this in the directory where you downloaded the release packages:
 
 ```bash
-curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt
+curl -fsSL -O https://github.com/acosmi/crabcode/releases/download/v1.3.47/checksums-sha256.txt
 shasum -a 256 -c checksums-sha256.txt
 ```
 
@@ -351,11 +351,11 @@ For Windows:
 
 ```powershell
 Invoke-WebRequest `
-  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.43/checksums-sha256.txt" `
+  -Uri "https://github.com/acosmi/crabcode/releases/download/v1.3.47/checksums-sha256.txt" `
   -OutFile checksums-sha256.txt
 
-$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.43-win-x64.zip").Line.Split()[0].ToLower()
-$Actual = (Get-FileHash crabcode-1.3.43-win-x64.zip -Algorithm SHA256).Hash.ToLower()
+$Expected = (Select-String -Path checksums-sha256.txt -Pattern "crabcode-1.3.47-win-x64.zip").Line.Split()[0].ToLower()
+$Actual = (Get-FileHash crabcode-1.3.47-win-x64.zip -Algorithm SHA256).Hash.ToLower()
 if ($Expected -ne $Actual) {
   throw "SHA256 mismatch: expected $Expected, got $Actual"
 }
