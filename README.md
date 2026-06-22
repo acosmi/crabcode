@@ -17,8 +17,8 @@
 ---
 
 > ### 🎉 CrabCode 1.0.0 正式版上线 · Now Live
-> **限时福利**：即日起 **每日可领取 500 万 Credits**，畅用 **GLM-5.2** 与 **deepseek-v4 系列**模型 —— 活动截止 **2026 年 7 月 31 日**。<br>
-> **Launch offer**: claim **5,000,000 Credits every day** to use **GLM-5.2** and the **deepseek-v4 series** — through **July 31, 2026**.
+> **新用户福利**：注册即享 **免费一个月 Basic 基础版会员**，赠送 **6000 万 Credits**，畅用 DeepSeek、Qwen3.7、MiniMax-M3、GLM-5.2 等国内主流模型，覆盖编码、对话、工具调用与深度思考全场景。<br>
+> **New users**: get a **free one-month Basic membership** with **60 million Credits** — powered by DeepSeek, Qwen3.7, MiniMax-M3, GLM-5.2 and more, across coding, chat, tool use, and deep thinking.
 
 ---
 
